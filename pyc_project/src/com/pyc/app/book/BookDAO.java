@@ -19,31 +19,7 @@ public class BookDAO extends DAO {
 		return dao;
 	}
 
-	public boolean checkSameBook(Book book) {
-		try {
-			String query = "SELECT * " 
-						 + "FROM pyc_book " 
-						 + "WHERE book_name = ? " 
-						 + "AND book_author = ?";
-			pstmt = conn.prepareStatement(query);
 
-			pstmt.setString(1, book.getBookName());
-			pstmt.setString(2, book.getBookAuthor());
-			rs = pstmt.executeQuery();
-
-			if(rs == null) { // null이라는 거는 똑같은 책이 없다는 거야
-				return false;
-			} 
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-
-		} finally {
-			disconnect();
-		}
-		
-		return true;
-	}
 
 	public void insertBook(Book book) {
 
@@ -98,5 +74,31 @@ public class BookDAO extends DAO {
 			disconnect();
 		}
 
+	}
+		
+	public boolean checkSameBook(Book book) {
+		try {
+			String query = "SELECT * " 
+						 + "FROM pyc_book " 
+						 + "WHERE book_name = ? " 
+						 + "AND book_author = ?";
+			pstmt = conn.prepareStatement(query);
+
+			pstmt.setString(1, book.getBookName());
+			pstmt.setString(2, book.getBookAuthor());
+			rs = pstmt.executeQuery();
+
+			if(rs == null) { // null이라는 거는 똑같은 책이 없다는 거야
+				return false;
+			} 
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			disconnect();
+		}
+		
+		return true;
 	}
 }
