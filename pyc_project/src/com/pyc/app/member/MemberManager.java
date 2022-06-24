@@ -3,10 +3,12 @@ package com.pyc.app.member;
 import java.util.List;
 
 import com.pyc.app.common.Manager;
+import com.pyc.app.deal.DealDAO;
 
 public class MemberManager extends Manager{
 	
 	private MemberDAO mDAO = MemberDAO.getInstance();
+	private DealDAO dDAO = DealDAO.getInstance();
 	
 	public MemberManager(Member memberInfo) {
 		whoAreYou(memberInfo);
@@ -32,11 +34,11 @@ public class MemberManager extends Manager{
 			} else if (menu == 4) {
 				// 연체 회원조회
 				System.out.println("현재 못만듬.. 책에 관련된 정보 + 대여, 반납에 대한 정보가 있어야 됨.");
-				// searchOverdueMember();
+				//searchOverdueMember();
 
 			} else if (menu == 0) {
 				// 뒤로가기
-				exit();
+				back();
 				break;
 
 			} else {
@@ -79,7 +81,16 @@ public class MemberManager extends Manager{
 		System.out.print("검색을 진행할 ID > ");		
 		Member m = mDAO.searchOneMember(sc.nextLine());
 		
+		if(m == null) {
+			System.out.println("도서관 회원이 아닙니다.!");
+			return;
+		}
+		
 		System.out.println(m);		
+	}
+	
+	private void searchOverdueMember() {
+		
 	}
 	
 }

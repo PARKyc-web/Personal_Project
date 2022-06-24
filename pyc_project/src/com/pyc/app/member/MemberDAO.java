@@ -59,8 +59,7 @@ public class MemberDAO extends DAO{
 	
 	// 아이디로 특정 회원(1명) 정보 검색
 	// 리턴값이 null이면 등록된 회원정보가 없는것!
-	public Member searchOneMember(String memberId) {	
-		
+	public Member searchOneMember(String memberId) {			
 		Member mem = null;		
 		try {
 			connect();

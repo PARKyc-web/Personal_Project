@@ -20,13 +20,34 @@ public class Manager {
 
 		} catch (NumberFormatException e) {
 			System.out.println("메뉴 확인 후 숫자를 입력해주세요!");
+			System.out.print("입력 > ");
+			menu = selectMenu();
 		}
 
 		return menu;
 	}
 	
-	protected void exit() {
+	protected int getNumber() {
+		int number = 0;
+
+		try {
+			number = Integer.parseInt(sc.nextLine());
+
+		} catch (NumberFormatException e) {
+			System.out.println("숫자를 입력해주세요");
+			System.out.print("입력 > ");
+			number = getNumber();
+		}				
+	
+		return number;
+	}
+	
+	protected void back() {
 		System.out.println("로그인 화면으로 돌아갑니다!");
+	}
+	
+	protected void exit() {
+		System.out.println("프로그램을 종료합니다!");
 	}
 	
 	protected void inputError() {

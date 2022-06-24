@@ -36,7 +36,7 @@ public class LoginManager extends Manager{
 				new MemberManager(memberInfo);
 
 			} else if (menu == 0) {
-				System.out.println("서비스 종료 선택");
+				exit();
 				break;
 
 			} else {
