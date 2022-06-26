@@ -26,13 +26,12 @@ public class MemberDAO extends DAO{
 		try {
 			connect();
 			String query = "INSERT INTO pyc_member "
-						 + "VALUES(?, ?, ?, DEFAULT)";
+						 + "VALUES(?, ?, DEFAULT)";
 			
 			pstmt = conn.prepareStatement(query);
 			
 			pstmt.setString(1, mem.getMemberId());
-			pstmt.setString(2, mem.getMemberPwd());
-			pstmt.setString(3, mem.getMemberName());			
+			pstmt.setString(2, mem.getMemberPwd());	
 			
 			int result = pstmt.executeUpdate();
 			
@@ -77,7 +76,6 @@ public class MemberDAO extends DAO{
 				mem = new Member();
 				
 				mem.setMemberId(rs.getString("member_id"));
-				mem.setMemberName(rs.getString("member_name"));
 				mem.setMemberPwd(rs.getString("member_pwd"));
 				mem.setMemberRole(rs.getInt("member_role"));				
 			}
@@ -109,7 +107,6 @@ public class MemberDAO extends DAO{
 				Member mem = new Member();
 				
 				mem.setMemberId(rs.getString("member_id"));
-				mem.setMemberName(rs.getString("member_name"));
 				mem.setMemberPwd(rs.getString("member_pwd"));
 				mem.setMemberRole(rs.getInt("member_role"));			
 				
@@ -135,10 +132,25 @@ public class MemberDAO extends DAO{
 		
 		try {
 			connect();
-		
-			String query = "";
+			//is_back = 0 >> 미반납 상태
+			//e_date < SYSDATE >> 현재시간이 반납시간보다 크다 >> 현재시간이 미래다
+			// 반납기간이 지남
+			String query = "SELECT m.member_id member_id, m.member_role role "
+						 + "FROM pyc_member m JOIN pyc_book_rent r "
+						 + "ON (m.member_id = r.member_id) "
+						 + "WHERE r.e_date < SYSDATE "
+						 + "AND r.is_back = 0";
 			
-			pstmt = conn.prepareStatement(query);
+			pstmt = conn.prepareStatement(query);			
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				Member mem = new Member();				
+				mem.setMemberId(rs.getString("member_id"));
+				mem.setMemberRole(rs.getInt("role"));
+				
+				list.add(mem);
+			}
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -148,6 +160,34 @@ public class MemberDAO extends DAO{
 		}				
 		
 		return list;
+	}
+	
+	public void memberShipUpgrade(Member member) {	
+  		try {
+			connect();
+		
+			String query = "UPDATE pyc_member "
+						 + "SET member_role = 1 "
+						 + "WHERE member_id = ?";
+			
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setString(1, member.getMemberId());
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				System.out.println("성공적으로 ["+ member.getMemberId()+"]의 등급을 올렸습니다");
+			}else {
+				System.out.println("등급 조정에 실패했습니다!");
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			disconnect();
+		}	
 	}
 	
 }

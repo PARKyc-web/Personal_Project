@@ -72,7 +72,7 @@ public class LoginManager extends Manager{
 		while (true) {
 			System.out.print("ID > ");
 			String id = sc.nextLine();
-
+			
 			System.out.print("PWASSWORD > ");
 			String pwd = sc.nextLine();
 
@@ -84,7 +84,7 @@ public class LoginManager extends Manager{
 				continue;
 
 			} else {
-				// ID는 있지만 비밀번호가 틀린겨우
+				// ID는 있지만 비밀번호가 틀린경우
 				if (!mem.getMemberPwd().equals(pwd)) {
 					System.out.println("PASSWORD를 다시 확인해주세요!");
 					continue;

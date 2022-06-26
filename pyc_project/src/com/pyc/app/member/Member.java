@@ -9,7 +9,6 @@ public class Member {
 
 	private String memberId;
 	private String memberPwd;
-	private String memberName;
 	private int memberRole;
 
 	@Override
@@ -21,7 +20,6 @@ public class Member {
 		}else {
 			str += "관리자 계정 :: ";
 		}
-		
 		str += "사용자 ID :" + memberId;		
 		return str;
 	}
@@ -32,8 +30,7 @@ public class Member {
 			Member mem = (Member)obj;			
 			
 			return this.memberId.equals(mem.getMemberId()) && this.memberPwd.equals(mem.getMemberPwd()); 
-		}
-		
+		}		
 		return false;
 	}
 	
