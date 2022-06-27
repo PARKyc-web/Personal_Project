@@ -7,8 +7,6 @@ import java.util.List;
 import com.pyc.app.common.DAO;
 import com.pyc.app.member.Member;
 
-import oracle.net.aso.p;
-
 public class BoardDAO extends DAO{
 
 	private static BoardDAO dao = null;

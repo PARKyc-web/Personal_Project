@@ -3,12 +3,10 @@ package com.pyc.app.member;
 import java.util.List;
 
 import com.pyc.app.common.Manager;
-import com.pyc.app.deal.DealDAO;
 
 public class MemberManager extends Manager{
 	
 	private MemberDAO mDAO = MemberDAO.getInstance();
-	private DealDAO dDAO = DealDAO.getInstance();
 	
 	public MemberManager(Member memberInfo) {
 		whoAreYou(memberInfo);

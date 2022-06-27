@@ -6,7 +6,6 @@ import com.pyc.app.book.Book;
 import com.pyc.app.book.BookDAO;
 import com.pyc.app.common.Manager;
 import com.pyc.app.member.Member;
-import com.pyc.app.member.MemberDAO;
 import com.pyc.app.reply.Reply;
 import com.pyc.app.reply.ReplyDAO;
 
@@ -14,7 +13,6 @@ public class BoardManager extends Manager {
 
 	private BoardDAO dao = BoardDAO.getInstatnce();
 	private BookDAO bDAO = BookDAO.getInstance();
-	private MemberDAO mDAO = MemberDAO.getInstance();
 	private ReplyDAO rDAO = ReplyDAO.getInstance();
 
 	int curPage = 1;

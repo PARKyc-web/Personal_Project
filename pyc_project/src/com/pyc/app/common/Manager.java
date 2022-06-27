@@ -16,7 +16,6 @@ public class Manager {
 
 		} catch (NumberFormatException e) {
 			System.out.println("메뉴 확인 후 숫자를 입력해주세요!");
-			System.out.print("입력 > ");
 			menu = selectMenu();
 		}
 
