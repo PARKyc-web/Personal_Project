@@ -1,7 +1,6 @@
 package com.pyc.app.login;
 
-import java.util.Scanner;
-
+import com.pyc.app.board.BoardManager;
 import com.pyc.app.book.BookManager;
 import com.pyc.app.common.Manager;
 import com.pyc.app.member.Member;
@@ -29,7 +28,7 @@ public class LoginManager extends Manager{
 				
 			} else if (menu == 2) {
 				System.out.println("게시판 사용 서비스 선택");
-				
+				new BoardManager(memberInfo);
 
 			} else if (menu == 3 && memberInfo.getMemberRole() == 1) {
 				System.out.println("회원관리 서비스 선택!");
@@ -40,7 +39,7 @@ public class LoginManager extends Manager{
 				break;
 
 			} else {
-				System.out.println("메뉴를 확인 후 다시 입력해주세요!");
+				inputError();
 			}
 		}
 	}

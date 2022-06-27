@@ -8,6 +8,7 @@ import lombok.Setter;
 public class Board {
 
 	private int boardId;
+	private String memberId;
 	private String boardTitle;
 	private String boardContents;
 	private int recommendBookId;	
@@ -49,8 +50,8 @@ Board 데이터 테이블
 CREATE TABLE pyc_BOARD(
 
 	board_id NUMBER(10) PRIMARY KEY,
-	board_title VARCHAR(30) NOT NULL,
-	board_contents VARCHAR(500),	
+	board_title VARCHAR(50) NOT NULL,
+	board_contents VARCHAR(1000),	
 	recommended_book_id NUMBER(10)
 	CONSTRAINT board_recommend_fk REFERENCES pyc_book(book_id),
 	
@@ -69,7 +70,7 @@ CREATE TABLE pyc_reply(
 	reply_id NUMBER(10) PRIMARY KEY,
 	board_id NUMBER(10) 
 	CONSTRAINT reply_bid_fk REFERENCES board(board_id),
-	board_contents VARCHAR(500)
+	board_contents VARCHAR(1000)
 	
 	member_id VARCHAR2(50)
 	CONSTRAINT reply_memId_fk REFERENCES pyc_member(member_id)

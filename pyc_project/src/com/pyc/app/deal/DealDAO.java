@@ -225,4 +225,64 @@ public class DealDAO extends DAO{
 		return list;		
 	}
 	
+	public void extendPeriod(RentedBook book) {
+		
+		try {
+			connect();
+			
+			String query= "UPDATE pyc_book_rent "
+						+ "SET delay_time = 1, e_date = e_date+7 "
+						+ "WHERE book_id = ? AND member_id = ? AND TO_CHAR(e_date) = ?";
+			
+			pstmt = conn.prepareStatement(query);
+			pstmt.setInt(1, book.getBookId());
+			pstmt.setString(2, book.getMemberId());
+			pstmt.setString(3, book.getEDate());
+			
+			System.out.println(book);
+			System.out.println(book.getEDate());
+			
+			int result = pstmt.executeUpdate();
+			
+			if(result > 0) {
+				System.out.println("정상적으로 연장되었습니다");
+			}else {
+				System.out.println("도서 연장에 실패하였습니다.");
+			}
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			disconnect();
+		}		
+	}
+	
+	public void scrapBook(Book book) {
+		try {
+			connect();			
+			String query = "UPDATE pyc_book "
+						 + "SET book_amount = book_amount -1 "
+						 + "WHERE book_id = " + book.getBookId();
+			
+			stmt = conn.createStatement();
+			
+			int result = stmt.executeUpdate(query);
+			
+			if(result > 0) {
+				System.out.println("성공적으로 책을 폐기했습니다.");
+			}else {
+				System.out.println("책 페기에 실패했습니다");
+			}			
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			disconnect();
+		}
+		
+	}
+	
+	
 }

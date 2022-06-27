@@ -19,8 +19,7 @@ public class BookManager extends Manager{
 		whoAreYou(memberInfo);
 		
 		int menu = -1;		
-		while(true) {
-			
+		while(true) {			
 			printMenu(memberInfo);
 			
 			menu = selectMenu();			
@@ -34,27 +33,26 @@ public class BookManager extends Manager{
 				
 			} else if(menu == 3 && memberInfo.getMemberRole() == 1) {
 				//도서반납
-				bookBack();
+				bookBack();			
 				
 			} else if(menu == 4 && memberInfo.getMemberRole() == 1) {
-				//기간연장, 관리자가 기간 연장하는 것
-				
-				
-			} else if(menu == 5 && memberInfo.getMemberRole() == 1) {
 				//책등록
 				bookIn();
 				
-			} else if(menu == 6 && memberInfo.getMemberRole() == 1) {
+			} else if(menu == 5 && memberInfo.getMemberRole() == 1) {
 				//책 폐기
-				
-				
-			} else if(menu == 7 && memberInfo.getMemberRole() == 1) {
-				searchMemberInfo();
-				
+				scrapBook();
+								
+			} else if(menu == 6 && memberInfo.getMemberRole() == 1) {
+				//사용자 정보확인(관리자용)
+				searchMemberInfo();				
 				
 			} else if(menu == 2) {
-				//사용자 1차 기간연장
+				//기간연장
+				extendPeriod(memberInfo);
 				
+			} else if(menu == 3) {
+				searchMyInfo(memberInfo);				
 				
 			} else if(menu == 0) {
 				back();
@@ -69,14 +67,14 @@ public class BookManager extends Manager{
 	private void printMenu(Member memberInfo) {		
 		System.out.println();
 		if(memberInfo.getMemberRole() == 0) {
-			System.out.println("==================================================");
-			System.out.println("|  1.도서검색  |  2.1차 기간연장  |  0.뒤로가기  |");
-			System.out.println("==================================================");
+			System.out.println("=================================================================");
+			System.out.println("|  1.도서검색  |  2.1차 기간연장  |  3.정보확인  |  0.뒤로가기  |");
+			System.out.println("=================================================================");
 			
 		}else {			
 			System.out.println("========================================================================================================================");
-			System.out.println("|  1.도서검색  |  2.도서대출  |  3.도서반납  |  4.기간연장  |"
-							  + "  5.책등록  |  6.책폐기  |  7.회원정보확인  |  0.뒤로가기  |");
+			System.out.println("|  1.도서검색  |  2.도서대출  |  3.도서반납  |  4.책등록  |"
+							  + "  5.책폐기  |  6.회원정보확인 |  0.뒤로가기  |");
 			System.out.println("========================================================================================================================");
 		}		
 	}
@@ -248,7 +246,88 @@ public class BookManager extends Manager{
 		}		
 	}
 	
+	private void extendPeriod(Member member) {
+		List<RentedBook> list = dDAO.rentedBookList(member);
+		
+		System.out.println("\n+++++++++++++++ 회원 도서대출정보 +++++++++++++++");
+		System.out.println("== 현재 대여중인 도서");
+		int count =1;
+		for(RentedBook rb : list) {
+			System.out.println((count++) + " - "+ rb);
+		}
+		
+		System.out.print("연장할 도서선택 > ");
+		while(true) {
+			int number = getNumber();
+			
+			if(list.get(number-1).getDelayTime() > 0) {
+				System.out.println("연장할 수 없는 도서입니다.!(최대 연장횟수 1회)");
+				return;
+			}
+			
+			if(number >= count || number == 0) {
+				System.out.println("목록을 확인 후 다시 선택해 주세요.");
+			}else {
+				dDAO.extendPeriod(list.get(number-1));
+				break;
+			}
+		}
+		
+		
+	}
 
+	private void searchMyInfo(Member member) {		
+		List<RentedBook> list = dDAO.rentedBookList(member);		
+		System.out.println("+++++++++++++++ 회원정보 +++++++++++++++");
+		System.out.println(member);
+		
+		System.out.println("\n+++++++++++++++ 회원 도서대출정보 +++++++++++++++");
+		System.out.println("== 현재 대여중인 도서");
+		int count =1;
+		for(RentedBook rb : list) {
+			System.out.println((count++) + " - "+ rb);
+		}
+		
+		list = dDAO.overdueBook(member);
+		System.out.println("\n== 현재 대여기간이 끝난 도서");
+		count =1;
+		for(RentedBook rb : list) {
+			System.out.println((count++) + " - "+ rb);
+		}		
+	}
 	
-	
+	private void scrapBook() {
+		System.out.print("폐기할 책 이름 > ");
+		List<Book> list = bDAO.searchBook(sc.nextLine());
+		int number =0;
+		if(list.size() == 0) {
+			System.out.println("검색한 이름의 도서가 존재하지 않습니다");
+			return;
+		}
+		
+		int count =1;
+		System.out.println("+++++++++++++++ 검색결과 +++++++++++++++");
+		for(Book b : list) {
+			System.out.println((count++) + ". - " + b);
+		}
+		System.out.println("++++++++++++++++++++++++++++++++++++++++");
+		
+		while(true) {
+			System.out.print("폐기할 책 번호 > ");
+			number = getNumber();
+			
+			if(number >= count) {
+				System.out.println("목록확인 후 다시 입력해주세요");
+				continue;
+			}
+			break;
+		}
+		
+		if(list.get(number-1).getBookAmount() <= 0) {
+			System.out.println("책의 수량이 부족합니다");
+			return;
+		}
+		
+		dDAO.scrapBook(list.get(number-1));		
+	}
 }

@@ -8,10 +8,6 @@ public class Manager {
 	
 	protected Scanner sc = new Scanner(System.in);
 	
-	
-	
-	
-	
 	protected int selectMenu() {
 		int menu = 0;
 		try {
