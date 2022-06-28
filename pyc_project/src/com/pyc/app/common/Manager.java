@@ -27,7 +27,12 @@ public class Manager {
 
 		try {
 			number = Integer.parseInt(sc.nextLine());
-
+			while(number < 0) {
+				System.out.println("숫자를 입력해주세요");
+				System.out.print("입력 > ");
+				number = getNumber();
+			}			
+			
 		} catch (NumberFormatException e) {
 			System.out.println("숫자를 입력해주세요");
 			System.out.print("입력 > ");

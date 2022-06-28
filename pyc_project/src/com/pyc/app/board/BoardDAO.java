@@ -51,23 +51,18 @@ public class BoardDAO extends DAO{
 		
 	}	
 	
-	public List<Board> searchAll(int curPage, int pageNumber){	
+	public List<Board> searchAll(){	
 		List<Board> list = new ArrayList<>();		
 		
 		try {
-			connect();
-			
-			int startNumber = ((curPage-1)*pageNumber)+1;
+			connect();		
 			
 			String query = "SELECT *"
 						 + "FROM pyc_board "
 						 + "WHERE board_abled = 0 "
-						 + "AND rownum BETWEEN ? AND ? ";
+						 + "ORDER BY rownum";
 			
-			pstmt = conn.prepareStatement(query);
-			pstmt.setInt(1, startNumber);
-			pstmt.setInt(2, (curPage*pageNumber));
-			
+			pstmt = conn.prepareStatement(query);			
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()) {
@@ -92,7 +87,7 @@ public class BoardDAO extends DAO{
 		return list;
 	}
 	
-	public List<Board> searchBoardByMember(Member member, int curPage, int pageNumber){
+	public List<Board> searchBoardByMember(Member member){
 		
 		List<Board> list = new ArrayList<>();
 		try {
@@ -101,7 +96,8 @@ public class BoardDAO extends DAO{
 			String query= "SELECT *"
 						+ "FROM pyc_board "
 						+ "WHERE board_abled = 0 "
-						+ "AND member_id = ? ";
+						+ "AND member_id = ? "
+						+ "ORDER BY rownum";
 		
 			pstmt = conn.prepareStatement(query);
 			pstmt.setString(1, member.getMemberId());
@@ -157,9 +153,83 @@ public class BoardDAO extends DAO{
 		}		
 	}
 	
+	public List<Board> searchBoardByTitle(String title){
+		
+		List<Board> list = new ArrayList<>();
+		
+		try {
+			connect();
+			
+			title = title.toLowerCase();			
+			String query = "SELECT *"
+						 + "FROM pyc_board "
+						 + "WHERE LOWER(board_title) LIKE '%" + title + "%' "
+						 + "AND board_abled = 0 "
+						 + "ORDER BY rownum ";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				Board board = new Board();
+				
+				board.setBoardTitle(rs.getString("board_title"));
+				board.setBoardId(rs.getInt("board_id"));
+				board.setMemberId(rs.getString("member_id"));
+				board.setBoardContents(rs.getString("board_contents"));
+				board.setRecommendBookId(rs.getInt("RECOMMENDED_BOOK_ID"));
+				
+				list.add(board);
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			disconnect();
+		}		
+		
+		return list;		
+	}
 	
-	
-	
+	public List<Board> searchBoardByContents(String contents){
+		List<Board> list = new ArrayList<>();
+		
+		try {
+			connect();
+			
+			contents = contents.toLowerCase();			
+			String query = "SELECT *"
+						 + "FROM pyc_board "
+						 + "WHERE LOWER(board_contents) LIKE '%" + contents + "%' "
+						 + "AND board_abled = 0 "
+						 + "ORDER BY rownum ";
+			
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				Board board = new Board();
+				
+				board.setBoardTitle(rs.getString("board_title"));
+				board.setBoardId(rs.getInt("board_id"));
+				board.setMemberId(rs.getString("member_id"));
+				board.setBoardContents(rs.getString("board_contents"));
+				board.setRecommendBookId(rs.getInt("RECOMMENDED_BOOK_ID"));
+				
+				list.add(board);
+			}
+		
+		}catch(SQLException e) {
+			e.printStackTrace();
+			
+		}finally {
+			disconnect();
+		}		
+		
+		return list;	
+		
+	}
 	
 	
 	

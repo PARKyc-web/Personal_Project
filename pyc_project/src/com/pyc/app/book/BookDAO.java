@@ -176,4 +176,38 @@ public class BookDAO extends DAO {
 		return list;		
 	}
 
+	
+	public Book searchBook(int bookId) {
+		
+		Book book = null;
+		try {
+			connect();			
+			String query = "SELECT * " 
+						 + "FROM pyc_book " 
+						 + "WHERE book_id = " + bookId;
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(query);
+
+			if(rs.next()) {
+				book = new Book();
+
+				book.setBookId(rs.getInt("book_id"));
+				book.setBookName(rs.getString("book_name"));
+				book.setBookAuthor(rs.getString("book_author"));
+				book.setBookAmount(rs.getInt("book_amount"));
+				book.setBookPrice(rs.getInt("book_price"));
+				book.setBookLocation(rs.getInt("book_location"));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			disconnect();
+		}
+
+		return book;
+	}
+	
 }
