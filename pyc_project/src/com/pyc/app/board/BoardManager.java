@@ -268,7 +268,7 @@ public class BoardManager extends Manager {
 				System.out.print("조회할 글 번호 > ");
 				int number = getNumber();
 
-				if (number >= (count+10) || number <= 0) {
+				if (number >= (count+10) || number <= 0 || list.size() <= number) {
 					System.out.println("글 목록 안에서 입력해주세요");
 
 				} else {

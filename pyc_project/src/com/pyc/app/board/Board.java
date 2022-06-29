@@ -18,7 +18,7 @@ public class Board {
 		String result = "";
 		
 		result += "제목 : " + boardTitle;
-		result += "\n작성자 : " + boardId;
+		result += "\n작성자 : " + memberId;
 		result += "\n추천도서 : " + recommendBookId;
 		result += "\n내용 : " + boardContents;
 		

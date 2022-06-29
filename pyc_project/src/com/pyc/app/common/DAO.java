@@ -27,6 +27,7 @@ public class DAO {
 	}
 	
 	private void dbconfig() {		
+		/*
 		String file = "config/db.properties";
 		Properties properties = new Properties();
 		
@@ -42,6 +43,11 @@ public class DAO {
 		url = properties.getProperty("url");
 		id = properties.getProperty("id");
 		pwd = properties.getProperty("password");
+		*/
+		driver = "oracle.jdbc.driver.OracleDriver";
+		url = "jdbc:oracle:thin:@localhost:1521:xe";
+		id ="hr";
+		pwd = "hr";
 	}
 
 	protected void connect() {		

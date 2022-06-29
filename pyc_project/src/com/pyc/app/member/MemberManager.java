@@ -2,7 +2,10 @@ package com.pyc.app.member;
 
 import java.util.List;
 
+import com.pyc.app.book.Book;
 import com.pyc.app.common.Manager;
+import com.pyc.app.deal.DealDAO;
+import com.pyc.app.deal.RentedBook;
 
 public class MemberManager extends Manager{
 	
@@ -94,8 +97,20 @@ public class MemberManager extends Manager{
 			System.out.println("도서관 회원이 아닙니다.!");
 			return;
 		}	
+		System.out.println("+++++++++++ 검색결과 +++++++++++");
+		System.out.println(m);
+		System.out.println("== 대여중인 책 ");
+		List<RentedBook> list = DealDAO.getInstance().rentedBookList(m);
+		for(RentedBook b: list) {
+			System.out.println(b);
+		}
 		
-		System.out.println(m);		
+		System.out.println("== 대여중인 책 ");
+		list = DealDAO.getInstance().overdueBook(m);
+		for(RentedBook b: list) {
+			System.out.println(b);
+		}
+		System.out.println("++++++++++++++++++++++++++++++++");
 	}
 	
 	private void memberShipUpgrade() {
@@ -106,6 +121,12 @@ public class MemberManager extends Manager{
 			System.out.println("존재하지 않는 회원입니다");
 			return;
 		}
+		
+		if(m.getMemberRole() == 1) {
+			System.out.println("이미 관리자 권한을 가진 회원입니다!");
+			return;
+		}
+		
 		System.out.println("==== 변경전");
 		System.out.println(m);
 		mDAO.memberShipUpgrade(m);
